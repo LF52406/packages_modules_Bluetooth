@@ -53,6 +53,8 @@ public final class BluetoothCodecConfig implements Parcelable {
                 SOURCE_CODEC_TYPE_LDAC,
                 SOURCE_CODEC_TYPE_LC3,
                 SOURCE_CODEC_TYPE_OPUS,
+                SOURCE_CODEC_TYPE_LHDC,
+                SOURCE_CODEC_TYPE_LHDC_LL,
                 SOURCE_CODEC_TYPE_INVALID
             })
     @Retention(RetentionPolicy.SOURCE)
@@ -115,6 +117,16 @@ public final class BluetoothCodecConfig implements Parcelable {
     @Deprecated public static final int SOURCE_CODEC_TYPE_OPUS = 6;
 
     /**
+     * Source codec type LHDC.
+     */
+    @Deprecated public static final int SOURCE_CODEC_TYPE_LHDC = 7;
+
+    /**
+     * Source codec type LHDC LL (Low Latency).
+     */
+    @Deprecated public static final int SOURCE_CODEC_TYPE_LHDC_LL = 8;
+
+    /**
      * Source codec type invalid. This is the default value used for codec type.
      *
      * @deprecated Use the {@link BluetoothCodecType} values returned by {@link
@@ -123,7 +135,7 @@ public final class BluetoothCodecConfig implements Parcelable {
     @Deprecated public static final int SOURCE_CODEC_TYPE_INVALID = 1000 * 1000;
 
     /** Represents the count of valid source codec types. */
-    static final int SOURCE_CODEC_TYPE_MAX = 7;
+    static final int SOURCE_CODEC_TYPE_MAX = 9;
 
     /** @hide */
     @IntDef(
@@ -528,6 +540,8 @@ public final class BluetoothCodecConfig implements Parcelable {
             case SOURCE_CODEC_TYPE_LDAC -> "LDAC";
             case SOURCE_CODEC_TYPE_LC3 -> "LC3";
             case SOURCE_CODEC_TYPE_OPUS -> "Opus";
+            case SOURCE_CODEC_TYPE_LHDC -> "LHDC";
+            case SOURCE_CODEC_TYPE_LHDC_LL -> "LHDC V5";
             case SOURCE_CODEC_TYPE_INVALID -> "INVALID CODEC";
             default -> "UNKNOWN CODEC(" + codecType + ")";
         };
