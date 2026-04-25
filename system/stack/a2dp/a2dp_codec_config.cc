@@ -41,6 +41,8 @@
 #include "a2dp_sbc.h"
 #include "a2dp_vendor.h"
 #include "a2dp_vendor_aptx_constants.h"
+#include "a2dp_vendor_lhdc_constants.h"
+#include "a2dp_vendor_lhdcv5_constants.h"
 #include "a2dp_vendor_aptx_hd_constants.h"
 #include "a2dp_vendor_ldac_constants.h"
 #include "avdt_api.h"
@@ -52,6 +54,8 @@
 #include "a2dp_vendor_aptx_hd.h"
 #include "a2dp_vendor_ldac.h"
 #include "a2dp_vendor_opus.h"
+#include "a2dp_vendor_lhdc.h"
+#include "a2dp_vendor_lhdcv5.h"
 #endif
 
 #include "audio_hal_interface/a2dp_encoding.h"
@@ -112,6 +116,10 @@ std::string CodecIdToString(CodecId codec_id) {
       return "LDAC";
     case CodecId::OPUS:
       return "OPUS";
+    case CodecId::LHDC:
+      return "LHDC";
+    case CodecId::LHDCV5:
+      return "LHDC_V5";
     default:
       if (static_cast<uint8_t>(codec_id) == A2DP_MEDIA_CT_NON_A2DP) {
         return std::format("Codec ID: 0x{:04x}, Vendor ID: 0x{:04x}",
@@ -219,6 +227,12 @@ A2dpCodecConfig* A2dpCodecConfig::createCodec(btav_a2dp_codec_index_t codec_inde
       break;
     case BTAV_A2DP_CODEC_INDEX_SINK_OPUS:
       codec_config = new A2dpCodecConfigOpusSink(codec_priority);
+      break;
+    case BTAV_A2DP_CODEC_INDEX_SOURCE_LHDC:
+      codec_config = new A2dpCodecConfigLhdcSource(codec_priority);
+      break;
+    case BTAV_A2DP_CODEC_INDEX_SOURCE_LHDCV5:
+      codec_config = new A2dpCodecConfigLhdcv5Source(codec_priority);
       break;
 #endif
     case BTAV_A2DP_CODEC_INDEX_MAX:
@@ -1281,6 +1295,10 @@ bool A2DP_CodecEquals(const uint8_t* p_codec_info_a, const uint8_t* p_codec_info
       return A2DP_VendorCodecEqualsLdac(p_codec_info_a, p_codec_info_b);
     case bluetooth::a2dp::CodecId::OPUS:
       return A2DP_VendorCodecEqualsOpus(p_codec_info_a, p_codec_info_b);
+    case bluetooth::a2dp::CodecId::LHDC:
+      return A2DP_VendorCodecEqualsLhdc(p_codec_info_a, p_codec_info_b);
+    case bluetooth::a2dp::CodecId::LHDCV5:
+      return A2DP_VendorCodecEqualsLhdcv5(p_codec_info_a, p_codec_info_b);
 #endif
     default:
       break;
@@ -1311,6 +1329,10 @@ int A2DP_GetTrackSampleRate(const uint8_t* p_codec_info) {
       return A2DP_VendorGetTrackSampleRateLdac(p_codec_info);
     case bluetooth::a2dp::CodecId::OPUS:
       return A2DP_VendorGetTrackSampleRateOpus(p_codec_info);
+    case bluetooth::a2dp::CodecId::LHDC:
+      return A2DP_VendorGetTrackSampleRateLhdc(p_codec_info);
+    case bluetooth::a2dp::CodecId::LHDCV5:
+      return A2DP_VendorGetTrackSampleRateLhdcv5(p_codec_info);
 #endif
     default:
       break;
@@ -1341,6 +1363,10 @@ int A2DP_GetTrackBitsPerSample(const uint8_t* p_codec_info) {
       return A2DP_VendorGetTrackBitsPerSampleLdac(p_codec_info);
     case bluetooth::a2dp::CodecId::OPUS:
       return A2DP_VendorGetTrackBitsPerSampleOpus(p_codec_info);
+    case bluetooth::a2dp::CodecId::LHDC:
+      return A2DP_VendorGetTrackBitsPerSampleLhdc(p_codec_info);
+    case bluetooth::a2dp::CodecId::LHDCV5:
+      return A2DP_VendorGetTrackBitsPerSampleLhdcv5(p_codec_info);
 #endif
     default:
       break;
@@ -1371,6 +1397,10 @@ int A2DP_GetTrackChannelCount(const uint8_t* p_codec_info) {
       return A2DP_VendorGetTrackChannelCountLdac(p_codec_info);
     case bluetooth::a2dp::CodecId::OPUS:
       return A2DP_VendorGetTrackChannelCountOpus(p_codec_info);
+    case bluetooth::a2dp::CodecId::LHDC:
+      return A2DP_VendorGetTrackChannelCountLhdc(p_codec_info);
+    case bluetooth::a2dp::CodecId::LHDCV5:
+      return A2DP_VendorGetTrackChannelCountLhdcv5(p_codec_info);
 #endif
     default:
       break;
@@ -1422,6 +1452,10 @@ bool A2DP_GetPacketTimestamp(const uint8_t* p_codec_info, const uint8_t* p_data,
       return A2DP_VendorGetPacketTimestampLdac(p_codec_info, p_data, p_timestamp);
     case bluetooth::a2dp::CodecId::OPUS:
       return A2DP_VendorGetPacketTimestampOpus(p_codec_info, p_data, p_timestamp);
+    case bluetooth::a2dp::CodecId::LHDC:
+      return A2DP_VendorGetPacketTimestampLhdc(p_codec_info, p_data, p_timestamp);
+    case bluetooth::a2dp::CodecId::LHDCV5:
+      return A2DP_VendorGetPacketTimestampLhdcv5(p_codec_info, p_data, p_timestamp);
 #endif
     default:
       break;
